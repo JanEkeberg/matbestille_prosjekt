@@ -5,11 +5,6 @@ Prosjekt beskrivelse skrives av prosjekt leder
 ---
 
 
-
-
-
-
-
 --- 
 ⚠️  Viktige: Git regler vil slettes etter alle i gruppe forstått og enig
 ---
