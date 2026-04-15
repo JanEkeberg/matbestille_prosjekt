@@ -2,9 +2,9 @@ namespace MatBestille.Models
 {
     public class Customer : User
     {
-        public string OrganizationNumber {get; set;}
-        public string OrganizationName {get; set;}
-        public string TeamNumber {get; set;}
+        public string OrganizationNumber {get; private set;}
+        public string OrganizationName {get; private set;}
+        public string TeamNumber {get; private set;}
 
         public Customer() { }
         public Customer(int id, 
@@ -17,14 +17,29 @@ namespace MatBestille.Models
                         string teamNumber
         ) : base(id, firstName, lastName, email, phoneNumber)
         {
-            OrganizationName = organizationName;
-            OrganizationNumber = organizationNumber;
-            TeamNumber = teamNumber;
+            OrganizationName = ValidateRequired(organizationName, "Organization Name");
+            OrganizationNumber = ValidateRequired(organizationNumber, "Organization Number");
+            TeamNumber = ValidateRequired(teamNumber, "Team Number");
         }
 
         public override string GetRole()
         {
             return "Customer";
+        }
+
+        public void UpdateTeam(string teamNumber)
+        {
+            TeamNumber = ValidateRequired(teamNumber, "Team Number");
+        }
+
+        public void UpdateOrganizationName(string orgName)
+        {
+            OrganizationName = ValidateRequired(orgName, "Organization Name");
+        }
+
+        public void UpdateOrganizationNumber(string orgNumber)
+        {
+            OrganizationNumber = ValidateRequired(orgNumber, "Organization Number");
         }
     }
 }
