@@ -2,7 +2,7 @@
 
 ## 📁 Mappe-struktur
 
-
+```bash
 MATBESTILLE_PROSJEKT/
 │
 ├── Program.cs
@@ -13,7 +13,7 @@ MATBESTILLE_PROSJEKT/
 ├── Services/
 ├── Data/
 └── Tests/
-
+```
 
 ---
 
