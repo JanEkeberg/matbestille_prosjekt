@@ -1,7 +1,7 @@
 # Matbestille_prosjekt
 Gruppe prosjekt om matbestilling
 ---
-Prosjekt beskrivelse skrives av prosjekt leder
+Prosjekt beskrivelse skrives av gruppleder
 ---
 
 
