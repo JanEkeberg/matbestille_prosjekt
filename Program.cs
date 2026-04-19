@@ -1,2 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿namespace matbestille_prosjekt
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            App.MainMenu();
+        }
+    }
+}
