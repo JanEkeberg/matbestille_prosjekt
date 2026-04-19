@@ -2,13 +2,15 @@ namespace MatBestille.Models
 {
     public class Employee : User
     {
-        public Employee() { }
-        public Employee(int id, 
-                        string firstName, 
-                        string lastName, 
-                        string email, 
-                        string phoneNumber
-        ) : base(id, firstName, lastName, email, phoneNumber) {}
+        public Employee(
+            string name,
+            string surname,
+            string email,
+            string telNumber
+        ) : base(name, surname, email, telNumber)
+        {
+            IsAdmin = false;
+        }
 
         public override string GetRole()
         {

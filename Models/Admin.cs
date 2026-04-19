@@ -2,13 +2,15 @@ namespace MatBestille.Models
 {
     public class Admin : User
     {
-        public Admin() { }
-        public Admin(int id, 
-                    string firstName, 
-                    string lastName, 
-                    string email, 
-                    string phoneNumber
-        ) : base(id, firstName, lastName, email, phoneNumber) {}
+        public Admin(
+            string name,
+            string surname,
+            string email,
+            string telNumber
+        ) : base(name, surname, email, telNumber)
+        {
+            IsAdmin = true;
+        }
 
         public override string GetRole()
         {
