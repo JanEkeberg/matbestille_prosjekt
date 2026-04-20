@@ -1,3 +1,5 @@
+// using MatBestille.Models;
+
 namespace MatBestille.Interfaces;
 
 public interface IInvoiceService
@@ -7,7 +9,7 @@ public interface IInvoiceService
     //hent alle faktura
     List<Invoice> GetAllInvoices();
     //sender faktura på eposten
-    void sendInvoice(string invoiceId);
+    void SendInvoice(string invoiceId);
     //skrive ut faktura
     void PrintInvoice(Invoice invoice);
-    
+}

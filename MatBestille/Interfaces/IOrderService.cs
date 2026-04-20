@@ -1,3 +1,5 @@
+// using MatBestille.Models;
+
 namespace MatBestille.Interfaces;
 
 public interface IOrderService
@@ -9,7 +11,7 @@ public interface IOrderService
     //hent alle bestiling fra ansatt
     List<Order> GetAllOrders();
     //hent senere bestilling
-    List<Order> GetUpComingOrders();
+    List<Order> GetUpcomingOrders();
     //merk bestiliing som har levert 
     void MarkAsDelivered(string orderId);
 }
