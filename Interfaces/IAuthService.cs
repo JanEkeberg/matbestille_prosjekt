@@ -1,4 +1,4 @@
-namespace DefaultNamespace;
+namespace MatBestille.Interfaces;
 
 public interface IAuthService
 {

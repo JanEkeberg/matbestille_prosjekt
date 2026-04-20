@@ -1,9 +1,9 @@
-namespace DefaultNamespace;
+namespace MatBestille.Interfaces;
 
-public interface IRepository
+public interface IRepository<T>
 {
     // hent alle objekter
-    List<t> GetAll();
+    List<T> GetAll();
     
     //hent et objekt via ID
     T? GetById(string id);
