@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MatBestille.Tests/MatBestille.Tests.csproj" />
+  <Project Path="MatBestille/MatBestille.csproj" />
+</Solution>
