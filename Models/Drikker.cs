@@ -1,3 +1,5 @@
+using MatBestille.Enums;
+
 namespace MatBestille.Models
 {
     public class Drikker : Produkt
