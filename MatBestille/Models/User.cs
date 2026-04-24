@@ -86,5 +86,17 @@ namespace MatBestille.Models
 
             return telNumber;
         }
+        
+        private string _password;
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Passord kan ikke være tomt.");
+                _password = value;
+            }
+        }
     }
 }
