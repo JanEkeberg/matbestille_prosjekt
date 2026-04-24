@@ -1,4 +1,5 @@
 using MatBestille.Interfaces;
+using MatBestille.Enums;
 using MatBestille.Models;
 
 namespace MatBestille.Services;
@@ -28,8 +29,9 @@ public class InvoiceService : IInvoiceService
             throw new Exception("Faktura allerede generert");
 
         var invoice = new Invoice(order);
+        order.UpdateStatus(OrderStatus.Invoiced);
         _invoiceRepo.Add(invoice);
-        _orderRepo.Update(order); // status → Invoiced
+        _orderRepo.Update(order);
         return invoice;
     }
 
@@ -43,7 +45,7 @@ public class InvoiceService : IInvoiceService
         Console.WriteLine($"  Dato: {invoice.GeneratedDate:dd.MM.yyyy}");
         Console.WriteLine("================================");
 
-        foreach (var linje in invoice.Order.Lines)
+        foreach (var linje in invoice.Order.OrderLines)
         {
             Console.WriteLine(
                 $"  {linje.Product.Name,-25} " +
@@ -63,9 +65,9 @@ public class InvoiceService : IInvoiceService
             ?? throw new Exception("Faktura ikke funnet");
 
         var kunde = _userRepo.GetById(
-            invoice.Order.CustomerId);
+            invoice.Order.Customer.UserId);
 
         Console.WriteLine(
-            $"Faktura sendt til: {kunde?.Email}");
+            $"Faktura sendt til: {kunde?.Email ?? "ukjent e-post"}");
     }
 }

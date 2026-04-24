@@ -1,4 +1,5 @@
 using MatBestille.Interfaces;
+using MatBestille.Enums;
 using MatBestille.Models;
 
 namespace MatBestille.Services;
@@ -22,7 +23,7 @@ public class OrderService : IOrderService
                 "Bestillingen kan ikke være tom");
 
         var order = new Order(
-            customerId, roomNumber, deliveryTime);
+            customer, roomNumber, deliveryTime);
         order.Lines = lines;
 
         _orderRepo.Add(order);
@@ -37,7 +38,7 @@ public class OrderService : IOrderService
     public List<Order> GetOrdersByCustomer(string customerId)
     {
         return _orderRepo.GetAll()
-            .Where(o => o.CustomerId == customerId)
+            .Where(o => o.Customer.UserId == customerId)
             .OrderByDescending(o => o.DeliveryTime)
             .ToList();
     }
@@ -74,7 +75,7 @@ public class OrderService : IOrderService
         if (order == null)
             throw new Exception("Bestilling ikke funnet");
 
-        order.Status = OrderStatus.Delivered;
+        order.UpdateStatus(OrderStatus.Delivered);
         _orderRepo.Update(order);
     }
 }
