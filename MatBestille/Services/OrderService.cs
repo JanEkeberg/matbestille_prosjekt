@@ -1,5 +1,5 @@
 using MatBestille.Interfaces;
-// using MatBestille.Models;
+using MatBestille.Models;
 
 namespace MatBestille.Services;
 
@@ -29,12 +29,32 @@ public class OrderService : IOrderService
         return order;
     }
 
+    public Order CreateOrder(string customerId, string roomNumber, DateTime deliveryTime, List lines)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<Order> GetOrdersByCustomer(string customerId)
     {
         return _orderRepo.GetAll()
             .Where(o => o.CustomerId == customerId)
             .OrderByDescending(o => o.DeliveryTime)
             .ToList();
+    }
+
+    List IOrderService.GetAllOrders()
+    {
+        throw new NotImplementedException();
+    }
+
+    List IOrderService.GetUpcomingOrders()
+    {
+        throw new NotImplementedException();
+    }
+
+    List IOrderService.GetOrdersByCustomer(string customerId)
+    {
+        throw new NotImplementedException();
     }
 
     public List<Order> GetAllOrders()
