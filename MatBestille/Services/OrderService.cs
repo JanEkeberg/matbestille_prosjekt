@@ -7,11 +7,12 @@ namespace MatBestille.Services;
 public class OrderService : IOrderService
 {
     private readonly IRepository<Order> _orderRepo;
+    private readonly IRepository<User>  _userRepo;  
 
-    
-    public OrderService(IRepository<Order> orderRepo)
+    public OrderService(IRepository<Order> orderRepo, IRepository<User> userRepo)
     {
         _orderRepo = orderRepo;
+        _userRepo  = userRepo;
     }
 
     public Order CreateOrder(
@@ -19,20 +20,18 @@ public class OrderService : IOrderService
         DateTime deliveryTime, List<OrderLine> lines)
     {
         if (lines == null || lines.Count == 0)
-            throw new ArgumentException(
-                "Bestillingen kan ikke være tom");
+            throw new ArgumentException("Bestillingen kan ikke være tom");
 
-        var order = new Order(
-            customer, roomNumber, deliveryTime);
-        order.Lines = lines;
+        var customer = _userRepo.GetById(customerId) as Customer
+            ?? throw new Exception("Kunde ikke funnet");
+
+        var order = new Order(customer, roomNumber, deliveryTime);
+
+        foreach (var line in lines)
+            order.AddOrderLine(line.Product, line.Quantity);
 
         _orderRepo.Add(order);
         return order;
-    }
-
-    public Order CreateOrder(string customerId, string roomNumber, DateTime deliveryTime, List lines)
-    {
-        throw new NotImplementedException();
     }
 
     public List<Order> GetOrdersByCustomer(string customerId)
@@ -43,21 +42,6 @@ public class OrderService : IOrderService
             .ToList();
     }
 
-    List IOrderService.GetAllOrders()
-    {
-        throw new NotImplementedException();
-    }
-
-    List IOrderService.GetUpcomingOrders()
-    {
-        throw new NotImplementedException();
-    }
-
-    List IOrderService.GetOrdersByCustomer(string customerId)
-    {
-        throw new NotImplementedException();
-    }
-
     public List<Order> GetAllOrders()
         => _orderRepo.GetAll();
 
@@ -65,15 +49,14 @@ public class OrderService : IOrderService
     {
         return _orderRepo.GetAll()
             .Where(o => o.DeliveryTime > DateTime.Now)
-            .OrderBy(o => o.DeliveryTime)  
+            .OrderBy(o => o.DeliveryTime)
             .ToList();
     }
 
     public void MarkAsDelivered(string orderId)
     {
-        var order = _orderRepo.GetById(orderId);
-        if (order == null)
-            throw new Exception("Bestilling ikke funnet");
+        var order = _orderRepo.GetById(orderId)
+            ?? throw new Exception("Bestilling ikke funnet");
 
         order.UpdateStatus(OrderStatus.Delivered);
         _orderRepo.Update(order);

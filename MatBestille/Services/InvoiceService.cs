@@ -4,25 +4,15 @@ using MatBestille.Models;
 
 namespace MatBestille.Services;
 
-public class InvoiceService : IInvoiceService
+public class InvoiceService(
+    IRepository<Invoice> invoiceRepo,
+    IRepository<Order> orderRepo,
+    IRepository<User> userRepo)
+    : IInvoiceService
 {
-    private readonly IRepository<Invoice> _invoiceRepo;
-    private readonly IRepository<Order>   _orderRepo;
-    private readonly IRepository<User>    _userRepo;
-
-    public InvoiceService(
-        IRepository<Invoice> invoiceRepo,
-        IRepository<Order>   orderRepo,
-        IRepository<User>    userRepo)
-    {
-        _invoiceRepo = invoiceRepo;
-        _orderRepo   = orderRepo;
-        _userRepo    = userRepo;
-    }
-
     public Invoice GenerateInvoice(string orderId)
     {
-        var order = _orderRepo.GetById(orderId)
+        var order = orderRepo.GetById(orderId)
             ?? throw new Exception("Bestilling ikke funnet");
 
         if (order.Status == OrderStatus.Invoiced)
@@ -30,13 +20,13 @@ public class InvoiceService : IInvoiceService
 
         var invoice = new Invoice(order);
         order.UpdateStatus(OrderStatus.Invoiced);
-        _invoiceRepo.Add(invoice);
-        _orderRepo.Update(order);
+        invoiceRepo.Add(invoice);
+        orderRepo.Update(order);
         return invoice;
     }
 
     public List<Invoice> GetAllInvoices()
-        => _invoiceRepo.GetAll();
+        => invoiceRepo.GetAll();
 
     public void PrintInvoice(Invoice invoice)
     {
@@ -47,27 +37,29 @@ public class InvoiceService : IInvoiceService
 
         foreach (var linje in invoice.Order.OrderLines)
         {
+            string name     = linje.Product.Name;
+            int    quantity = linje.Quantity;
+            decimal total   = linje.LineTotal;
+
             Console.WriteLine(
-                $"  {linje.Product.Name,-25} " +
-                $"x{linje.Quantity,2} = "     +
-                $"{linje.LineTotal,8:N0} NOK");
+                $"  {name,-25} x{quantity,2} = {total,8:N0} NOK");
         }
 
         Console.WriteLine("--------------------------------");
-        Console.WriteLine(
-            $"  TOTAL: {invoice.TotalAmount,25:N0} NOK");
+
+        decimal totalAmount = invoice.TotalAmount;
+        Console.WriteLine($"  TOTAL: {totalAmount,25:N0} NOK");
         Console.WriteLine("================================");
     }
 
     public void SendInvoice(string invoiceId)
     {
-        var invoice = _invoiceRepo.GetById(invoiceId)
+        var invoice = invoiceRepo.GetById(invoiceId)
             ?? throw new Exception("Faktura ikke funnet");
 
-        var kunde = _userRepo.GetById(
-            invoice.Order.Customer.UserId);
+        var user = userRepo.GetById(invoice.Order.Customer.UserId);
 
         Console.WriteLine(
-            $"Faktura sendt til: {kunde?.Email ?? "ukjent e-post"}");
+            $"Faktura sendt til: {user?.Email ?? "ukjent e-post"}");
     }
 }
