@@ -1,15 +1,15 @@
-﻿# Default ignored files
+# 默认忽略的文件
 /shelf/
 /workspace.xml
-# Rider ignored files
-/modules.xml
-/.idea.matbestille_prosjekt.iml
+# Rider 忽略的文件
 /projectSettingsUpdater.xml
 /contentModel.xml
-# Ignored default folder with query files
+/modules.xml
+/.idea.Matbestilling.iml
+# 基于编辑器的 HTTP 客户端请求
+/httpRequests/
+# 已忽略包含查询文件的默认文件夹
 /queries/
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-# Editor-based HTTP Client requests
-/httpRequests/
