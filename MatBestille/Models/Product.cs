@@ -1,18 +1,18 @@
 namespace MatBestille.Models
 {
-    public abstract class Produkt
+    public abstract class Product
     {
         private static int ProductCounter = 1;
 
-        public string ProduktId { get; private set; }
+        public string ProductId { get; private set; }
         public string Name { get; private set; }
         public decimal Price { get; private set; }
 
-        protected Produkt() { }
+        protected Product() { }
 
-        protected Produkt(string name, decimal price)
+        protected Product(string name, decimal price)
         {
-            ProduktId = $"P{ProductCounter:D3}";
+            ProductId = $"P{ProductCounter:D3}";
             ProductCounter++;
 
             Name = ValidateRequired(name, "Name");
@@ -21,7 +21,7 @@ namespace MatBestille.Models
 
         public string GetInfo()
         {
-            return $"ID: {ProduktId}, Name: {Name}, Price: {Price} NOK";
+            return $"ID: {ProductId}, Name: {Name}, Price: {Price} NOK";
         }
 
         public abstract void DisplayProduktInfo();

@@ -1,6 +1,6 @@
 namespace MatBestille.Models
 {
-    public class Kake : Produkt
+    public class Kake : Product
     {
         public int ForHowManyPeople { get; private set; }
 

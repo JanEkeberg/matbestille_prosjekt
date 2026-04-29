@@ -2,7 +2,7 @@ using MatBestille.Enums;
 
 namespace MatBestille.Models
 {
-    public class Drikker : Produkt
+    public class Drikker : Product
     {
         public BottleSize Size { get; private set; }
 

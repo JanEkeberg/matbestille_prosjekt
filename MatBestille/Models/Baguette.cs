@@ -1,6 +1,6 @@
 namespace MatBestille.Models
 {
-    public class Baguette : Produkt
+    public class Baguette : Product
     {
         public string Allergen { get; private set; }
 
