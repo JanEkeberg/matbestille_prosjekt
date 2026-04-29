@@ -2,13 +2,13 @@ namespace MatBestille.Models
 {
     public class OrderLine
     {
-        public Produkt Product { get; private set; }
+        public Product Product { get; private set; }
         public int Quantity { get; private set; }
         public decimal LineTotal => Product.Price * Quantity;
 
         protected OrderLine() { }
 
-        public OrderLine(Produkt product, int quantity)
+        public OrderLine(Product product, int quantity)
         {
             Product = product ?? throw new ArgumentNullException(nameof(product));
             Quantity = ValidatePositiveNumber(quantity, "Quantity");

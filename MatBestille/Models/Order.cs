@@ -49,14 +49,14 @@ namespace MatBestille.Models
             }
         }
 
-        public void AddOrderLine(Produkt product, int quantity)
+        public void AddOrderLine(Product product, int quantity)
         {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
             quantity = ValidatePositiveNumber(quantity, "Quantity");
 
-            var existingLine = OrderLines.FirstOrDefault(x => x.Product.ProduktId == product.ProduktId);
+            var existingLine = OrderLines.FirstOrDefault(x => x.Product.ProductId == product.ProductId);
 
             if (existingLine != null)
             {
@@ -68,14 +68,14 @@ namespace MatBestille.Models
             }
         }
 
-        public void UpdateOrderLineQuantity(Produkt product, int newQuantity)
+        public void UpdateOrderLineQuantity(Product product, int newQuantity)
         {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
             newQuantity = ValidatePositiveNumber(newQuantity, "Quantity");
 
-            var existingLine = OrderLines.FirstOrDefault(x => x.Product.ProduktId == product.ProduktId);
+            var existingLine = OrderLines.FirstOrDefault(x => x.Product.ProductId == product.ProductId);
 
             if (existingLine == null)
                 throw new ArgumentException("Order line was not found.");
@@ -83,12 +83,12 @@ namespace MatBestille.Models
             existingLine.UpdateQuantity(newQuantity);
         }
 
-        public void RemoveOrderLine(Produkt product)
+        public void RemoveOrderLine(Product product)
         {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
-            var existingLine = OrderLines.FirstOrDefault(x => x.Product.ProduktId == product.ProduktId);
+            var existingLine = OrderLines.FirstOrDefault(x => x.Product.ProductId == product.ProductId);
 
             if (existingLine == null)
                 throw new ArgumentException("Order line was not found.");

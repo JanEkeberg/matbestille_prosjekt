@@ -2,7 +2,7 @@ using System;
 
 namespace MatBestille.Models
 {
-    public class Wraps : Produkt
+    public class Wraps : Product
     {
         public string Allergens { get; private set; }
         public bool IsGrov { get; private set; }
