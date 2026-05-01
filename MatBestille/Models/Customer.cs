@@ -1,12 +1,20 @@
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace MatBestille.Models
 {
     public class Customer : User
     {
-        public string OrgNumber { get; private set; }
-        public string TeamNumber { get; private set; }
+        [JsonInclude]
+        public string OrgNumber { get; private set; } = string.Empty;
 
+        [JsonInclude]
+        public string TeamNumber { get; private set; } = string.Empty;
+
+        // Empty constructor used for object creation and JSON deserialization.
+        public Customer() { }
+
+        // Creates a new customer user with organization and team information.
         public Customer(
             string name,
             string surname,
@@ -21,21 +29,25 @@ namespace MatBestille.Models
             IsAdmin = false;
         }
 
+        // Returns the role name for this user type.
         public override string GetRole()
         {
             return "Customer";
         }
 
+        // Updates the organization number after validating it.
         public void UpdateOrgNumber(string newOrgNumber)
         {
             OrgNumber = ValidateOrgNumber(newOrgNumber);
         }
 
+        // Updates the team number after validating it.
         public void UpdateTeamNumber(string newTeamNumber)
         {
             TeamNumber = ValidateTeamNumber(newTeamNumber);
         }
 
+        // Validates that the organization number is exactly 9 digits.
         private static string ValidateOrgNumber(string orgNumber)
         {
             if (string.IsNullOrWhiteSpace(orgNumber))
@@ -49,6 +61,7 @@ namespace MatBestille.Models
             return orgNumber;
         }
 
+        // Validates that the team number follows the required format, for example A045.
         private static string ValidateTeamNumber(string teamNumber)
         {
             if (string.IsNullOrWhiteSpace(teamNumber))

@@ -6,15 +6,17 @@ namespace MatBestille.Models
     {
         private static int OrderCounter = 1;
 
-        public string OrderId { get; private set; }
-        public Customer Customer { get; private set; }
-        public string RoomNumber { get; private set; }
+        public string OrderId { get; private set; } = string.Empty;
+        public Customer Customer { get; private set; } = null!;
+        public string RoomNumber { get; private set; } = string.Empty;
         public DateTime DeliveryTime { get; private set; }
         public OrderStatus Status { get; private set; }
-        public List<OrderLine> OrderLines { get; private set; }
+        public List<OrderLine> OrderLines { get; private set; } = new();
 
+        // Empty constructor used for object creation and JSON deserialization.
         protected Order() { }
 
+        // Creates a new order with customer, room number, delivery time, and pending status.
         public Order(Customer customer, string roomNumber, DateTime deliveryTime)
         {
             OrderId = $"O{OrderCounter:D3}";
@@ -27,11 +29,13 @@ namespace MatBestille.Models
             OrderLines = new List<OrderLine>();
         }
 
+        // Returns order information as a formatted text.
         public string GetInfo()
         {
             return $"Order ID: {OrderId}, Customer: {Customer.Name} {Customer.Surname}, Room: {RoomNumber}, Delivery Time: {DeliveryTime}, Status: {Status}, Total Price: {TotalPrice()} NOK";
         }
 
+        // Displays order information and all order lines in the console.
         public void DisplayOrderInfo()
         {
             Console.WriteLine(GetInfo());
@@ -49,6 +53,7 @@ namespace MatBestille.Models
             }
         }
 
+        // Adds a product to the order or increases quantity if it already exists.
         public void AddOrderLine(Product product, int quantity)
         {
             if (product == null)
@@ -68,6 +73,7 @@ namespace MatBestille.Models
             }
         }
 
+        // Updates the quantity of an existing product in the order.
         public void UpdateOrderLineQuantity(Product product, int newQuantity)
         {
             if (product == null)
@@ -83,6 +89,7 @@ namespace MatBestille.Models
             existingLine.UpdateQuantity(newQuantity);
         }
 
+        // Removes an existing product line from the order.
         public void RemoveOrderLine(Product product)
         {
             if (product == null)
@@ -96,26 +103,31 @@ namespace MatBestille.Models
             OrderLines.Remove(existingLine);
         }
 
+        // Calculates the total price of all order lines.
         public decimal TotalPrice()
         {
             return OrderLines.Sum(x => x.LineTotal);
         }
 
+        // Updates the room number after validating it.
         public void UpdateRoomNumber(string newRoomNumber)
         {
             RoomNumber = ValidateRoomNumber(newRoomNumber);
         }
 
+        // Updates the delivery time after validating it.
         public void UpdateDeliveryTime(DateTime newDeliveryTime)
         {
             DeliveryTime = ValidateDeliveryTime(newDeliveryTime);
         }
 
+        // Updates the current status of the order.
         public void UpdateStatus(OrderStatus newStatus)
         {
             Status = newStatus;
         }
 
+        // Validates that the room number is not empty.
         protected static string ValidateRoomNumber(string roomNumber)
         {
             if (string.IsNullOrWhiteSpace(roomNumber))
@@ -124,6 +136,7 @@ namespace MatBestille.Models
             return roomNumber.Trim().ToUpper();
         }
 
+        // Validates that the delivery time is in the future.
         protected static DateTime ValidateDeliveryTime(DateTime deliveryTime)
         {
             if (deliveryTime <= DateTime.Now)
@@ -132,6 +145,7 @@ namespace MatBestille.Models
             return deliveryTime;
         }
 
+        // Validates that the given number is greater than zero.
         protected static int ValidatePositiveNumber(int value, string fieldName)
         {
             if (value <= 0)
