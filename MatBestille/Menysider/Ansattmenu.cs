@@ -75,7 +75,7 @@ public class StaffMenu
         foreach (var o in ordrer)
         {
             Console.WriteLine($"\n[{o.OrderId}] {o.DeliveryTime:dd.MM.yyyy HH:mm} – Rom {o.RoomNumber}");
-            Console.WriteLine($"  Status: {o.Status} | Total: {o.TotalPrice:N0} NOK");
+            Console.WriteLine($"  Status: {o.Status} | Total: {o.TotalPrice():N0} NOK");
         }
 
         Console.WriteLine("\nTrykk en tast...");

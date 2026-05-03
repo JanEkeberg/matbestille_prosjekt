@@ -58,8 +58,8 @@ public class AdminMenu
             foreach (var o in ordrer)
             {
                 Console.WriteLine($"\n[{o.OrderId}] {o.DeliveryTime:dd.MM.yyyy HH:mm}");
-                Console.WriteLine($"  Kunde: {o.Customer} | Rom: {o.RoomNumber}");
-                Console.WriteLine($"  Status: {o.Status} | Total: {o.TotalPrice:N0} NOK");
+                Console.WriteLine($"  Kunde: {o.Customer.Name} {o.Customer.Surname} | Rom: {o.RoomNumber}");
+                Console.WriteLine($"  Status: {o.Status} | Total: {o.TotalPrice():N0} NOK");
             }
         }
 

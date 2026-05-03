@@ -1,5 +1,6 @@
 using MatBestille.Interfaces;
 using MatBestille.Models;
+
 namespace MatBestille.Menysider;
 
 public class CustomerMenu
@@ -97,13 +98,7 @@ public class CustomerMenu
         Console.Write("Romnummer: ");
         string rom = Console.ReadLine() ?? "";
 
-        Console.Write("Leveringsdato (dd.MM.yyyy HH:mm): ");
-        if (!DateTime.TryParse(Console.ReadLine(), out DateTime levering))
-        {
-            Console.WriteLine("Ugyldig dato. Avbryter.");
-            Console.ReadKey();
-            return;
-        }
+        DateTime levering = LesLeveringstid();
 
         try
         {
@@ -111,7 +106,8 @@ public class CustomerMenu
                 _kunde.UserId, rom, levering, ordreLinjer);
 
             Console.WriteLine($"\nBestilling opprettet! ID: {ordre.OrderId}");
-            Console.WriteLine($"Total: {ordre.TotalPrice:N0} NOK");
+            Console.WriteLine($"Leveringstid: {ordre.DeliveryTime:dd.MM.yyyy HH:mm}");
+            Console.WriteLine($"Total: {ordre.TotalPrice():N0} NOK");
         }
         catch (Exception ex)
         {
@@ -139,11 +135,38 @@ public class CustomerMenu
             {
                 Console.WriteLine($"\n[{o.OrderId}] {o.DeliveryTime:dd.MM.yyyy HH:mm}");
                 Console.WriteLine($"  Rom: {o.RoomNumber} | Status: {o.Status}");
-                Console.WriteLine($"  Total: {o.TotalPrice:N0} NOK");
+                Console.WriteLine($"  Total: {o.TotalPrice():N0} NOK");
             }
         }
 
         Console.WriteLine("\nTrykk en tast...");
         Console.ReadKey();
+    }
+
+    private DateTime LesLeveringstid()
+    {
+        DateTime standardLeveringstid = DateTime.Now.AddHours(1);
+
+        Console.WriteLine($"Standard leveringstid: {standardLeveringstid:dd.MM.yyyy HH:mm}");
+        Console.Write("Trykk Enter for standard tid, eller skriv ny tid (dd.MM.yyyy HH:mm): ");
+
+        string input = Console.ReadLine() ?? "";
+
+        if (string.IsNullOrWhiteSpace(input))
+            return standardLeveringstid;
+
+        if (!DateTime.TryParse(input, out DateTime leveringstid))
+        {
+            Console.WriteLine("Ugyldig datoformat. Standard leveringstid brukes.");
+            return standardLeveringstid;
+        }
+
+        if (leveringstid <= DateTime.Now)
+        {
+            Console.WriteLine("Leveringstid kan ikke være i fortiden. Standard leveringstid brukes.");
+            return standardLeveringstid;
+        }
+
+        return leveringstid;
     }
 }

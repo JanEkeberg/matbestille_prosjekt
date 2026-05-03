@@ -1,4 +1,5 @@
 using MatBestille.Enums;
+using System.Text.Json.Serialization;
 
 namespace MatBestille.Models
 {
@@ -6,17 +7,28 @@ namespace MatBestille.Models
     {
         private static int OrderCounter = 1;
 
+        [JsonInclude]
         public string OrderId { get; private set; } = string.Empty;
+
+        [JsonInclude]
         public Customer Customer { get; private set; } = null!;
+
+        [JsonInclude]
         public string RoomNumber { get; private set; } = string.Empty;
+
+        [JsonInclude]
         public DateTime DeliveryTime { get; private set; }
+
+        [JsonInclude]
         public OrderStatus Status { get; private set; }
+
+        [JsonInclude]
         public List<OrderLine> OrderLines { get; private set; } = new();
 
         // Empty constructor used for object creation and JSON deserialization.
-        protected Order() { }
+        public Order() { }
 
-        // Creates a new order with customer, room number, delivery time, and pending status.
+        // Creates a new order.
         public Order(Customer customer, string roomNumber, DateTime deliveryTime)
         {
             OrderId = $"O{OrderCounter:D3}";
@@ -29,13 +41,13 @@ namespace MatBestille.Models
             OrderLines = new List<OrderLine>();
         }
 
-        // Returns order information as a formatted text.
+        // Returns order information.
         public string GetInfo()
         {
             return $"Order ID: {OrderId}, Customer: {Customer.Name} {Customer.Surname}, Room: {RoomNumber}, Delivery Time: {DeliveryTime}, Status: {Status}, Total Price: {TotalPrice()} NOK";
         }
 
-        // Displays order information and all order lines in the console.
+        // Displays order information.
         public void DisplayOrderInfo()
         {
             Console.WriteLine(GetInfo());
@@ -47,13 +59,14 @@ namespace MatBestille.Models
             }
 
             Console.WriteLine("Order lines:");
+
             foreach (var line in OrderLines)
             {
                 Console.WriteLine($"- {line.GetInfo()}");
             }
         }
 
-        // Adds a product to the order or increases quantity if it already exists.
+        // Adds a product to the order.
         public void AddOrderLine(Product product, int quantity)
         {
             if (product == null)
@@ -73,7 +86,7 @@ namespace MatBestille.Models
             }
         }
 
-        // Updates the quantity of an existing product in the order.
+        // Updates quantity for an existing product.
         public void UpdateOrderLineQuantity(Product product, int newQuantity)
         {
             if (product == null)
@@ -89,7 +102,7 @@ namespace MatBestille.Models
             existingLine.UpdateQuantity(newQuantity);
         }
 
-        // Removes an existing product line from the order.
+        // Removes a product from the order.
         public void RemoveOrderLine(Product product)
         {
             if (product == null)
@@ -103,31 +116,31 @@ namespace MatBestille.Models
             OrderLines.Remove(existingLine);
         }
 
-        // Calculates the total price of all order lines.
+        // Calculates total price.
         public decimal TotalPrice()
         {
             return OrderLines.Sum(x => x.LineTotal);
         }
 
-        // Updates the room number after validating it.
+        // Updates room number.
         public void UpdateRoomNumber(string newRoomNumber)
         {
             RoomNumber = ValidateRoomNumber(newRoomNumber);
         }
 
-        // Updates the delivery time after validating it.
+        // Updates delivery time.
         public void UpdateDeliveryTime(DateTime newDeliveryTime)
         {
             DeliveryTime = ValidateDeliveryTime(newDeliveryTime);
         }
 
-        // Updates the current status of the order.
+        // Updates order status.
         public void UpdateStatus(OrderStatus newStatus)
         {
             Status = newStatus;
         }
 
-        // Validates that the room number is not empty.
+        // Validates room number.
         protected static string ValidateRoomNumber(string roomNumber)
         {
             if (string.IsNullOrWhiteSpace(roomNumber))
@@ -136,7 +149,7 @@ namespace MatBestille.Models
             return roomNumber.Trim().ToUpper();
         }
 
-        // Validates that the delivery time is in the future.
+        // Validates delivery time.
         protected static DateTime ValidateDeliveryTime(DateTime deliveryTime)
         {
             if (deliveryTime <= DateTime.Now)
@@ -145,7 +158,7 @@ namespace MatBestille.Models
             return deliveryTime;
         }
 
-        // Validates that the given number is greater than zero.
+        // Validates positive number.
         protected static int ValidatePositiveNumber(int value, string fieldName)
         {
             if (value <= 0)

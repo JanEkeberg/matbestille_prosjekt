@@ -35,6 +35,10 @@ public class JsonRepository<T> : IRepository<T>
     public void Add(T item)
     {
         var liste = GetAll();
+
+        // Sørger for at nye objekter ikke får samme ID som eksisterende objekter
+        SikreUnikId(item, liste);
+
         liste.Add(item);
         Lagre(liste);
     }
@@ -73,5 +77,57 @@ public class JsonRepository<T> : IRepository<T>
 
         return idProperty?.GetValue(item)?.ToString() ?? "";
     }
-}
 
+    // Sjekker om ID mangler eller allerede finnes, og lager ny ID hvis nødvendig
+    private void SikreUnikId(T item, List<T> liste)
+    {
+        if (item == null) return;
+
+        var idProperty = item.GetType()
+            .GetProperties()
+            .FirstOrDefault(p => p.Name.EndsWith("Id") && p.PropertyType == typeof(string));
+
+        if (idProperty == null) return;
+
+        string currentId = idProperty.GetValue(item)?.ToString() ?? "";
+
+        bool manglerId = string.IsNullOrWhiteSpace(currentId);
+        bool idFinnesFraFor = liste.Any(x => GetId(x) == currentId);
+
+        if (!manglerId && !idFinnesFraFor)
+            return;
+
+        string prefix = FinnPrefix(idProperty.Name);
+
+        int nesteNummer = liste
+            .Select(GetId)
+            .Where(id => id.StartsWith(prefix))
+            .Select(id =>
+            {
+                string nummerDel = id.Substring(prefix.Length);
+                return int.TryParse(nummerDel, out int nummer) ? nummer : 0;
+            })
+            .DefaultIfEmpty(0)
+            .Max() + 1;
+
+        string nyId = $"{prefix}{nesteNummer:D3}";
+
+        var setter = idProperty.GetSetMethod(nonPublic: true);
+
+        if (setter != null)
+            setter.Invoke(item, new object[] { nyId });
+    }
+
+    // Velger riktig ID-prefix basert på property-navnet
+    private string FinnPrefix(string idPropertyName)
+    {
+        return idPropertyName switch
+        {
+            "UserId" => "U",
+            "ProductId" => "P",
+            "OrderId" => "O",
+            "InvoiceId" => "I",
+            _ => "ID"
+        };
+    }
+}
