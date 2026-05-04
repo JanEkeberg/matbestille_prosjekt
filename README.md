@@ -198,3 +198,10 @@ Deretter kan applikasjonen kjøres på nytt.
 ## Kort oppsummering
 
 MatBestille viser hvordan et enkelt matbestillingssystem kan bygges med C# og objektorientert programmering. Prosjektet bruker tydelig rollefordeling, modeller, services, repositories, JSON-lagring og unit testing for å lage en strukturert og testbar konsollapplikasjon.
+
+---
+
+## Gruppemedlemmer
+
+Jan Memet Ekeberg
+Aashish Karki
