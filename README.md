@@ -122,7 +122,7 @@ MatBestille/
 
 Testprosjektet ligger separat:
 
-```text
+```bash
 MatBestille.Tests/
 ```
 
