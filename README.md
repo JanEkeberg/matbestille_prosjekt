@@ -1,4 +1,3 @@
-```markdown
 # MatBestille
 
 ## Prosjektbeskrivelse
@@ -120,7 +119,6 @@ MatBestille/
 │   └── invoices.json
 │
 └── Program.cs
-```
 
 Testprosjektet ligger separat:
 
